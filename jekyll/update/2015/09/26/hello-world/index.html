@@ -11,7 +11,7 @@
 
   <title>
     
-      hello world &middot; Nemanja Lazic
+      CSAWCTF 2015: Lawn Care Simulator &middot; Nemanja Lazic
     
   </title>
 
@@ -91,21 +91,104 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">hello world</h1>
+  <h1 class="post-title">CSAWCTF 2015: Lawn Care Simulator</h1>
   <span class="post-date">26 Sep 2015</span>
-  <p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+  <h4>Challenge details</h4>
 
-<p>To add new posts, simply add a file in the <code>_posts</code> directory that follows the convention <code>YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+<table>
+    <tr>
+        <th>Contest</th>
+        <th>Challenge</th>
+        <th>Category</th>
+        <th>Points</th>
+    </tr>
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+    <tr>
+        <td>CSAWCTF 2015</th>
+        <td>Lawn Care Simulator</th>
+        <td>Web</th>
+        <td>200</th>
+    </tr>
+</table>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">&#39;Tom&#39;</span><span class="p">)</span>
-<span class="c1">#=&gt; prints &#39;Hi, Tom&#39; to STDOUT.</span></code></pre></div>
+<h3>Write-up</h3>
 
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://github.com/jekyll/jekyll-help">Jekyll’s dedicated Help repository</a>.</p>
+<p>We have the login page, which takes 2 argument username and password, and password is hashed on front with js md5;</p>
+
+<ul>
+<li><p>First we attempt to do some SQL injection, but without success
+<img src="/public/images/CSAWCTF1.png" alt="CSAWCTF1"></p></li>
+<li><p>let&#39;s try to make some sort of error, we send a password param as array
+<img src="/public/images/CSAWCTF2.png" alt="TCSAWCTF2"></p></li>
+</ul>
+
+<p>Eureka! Works like a charm.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Lawn Care Simulator 2015<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//code.jquery.com/jquery-1.11.3.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span> 
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>flag{gr0wth__h4ck!nG!1!1!<span class="nt">&lt;/h1&gt;&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<h3>Why it works</h3>
+
+<ul>
+<li>First let&#39;s look premium.php page</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">...</span>
+<span class="x">    if (isset($_POST[&#39;password&#39;]) &amp;&amp; isset($_POST[&#39;username&#39;])) {</span>
+<span class="x">        $auth = validate($_POST[&#39;username&#39;], $_POST[&#39;password&#39;]); </span>
+<span class="x">        if ($auth){</span>
+<span class="x">            echo &quot;&lt;h1&gt;&quot; . $flag . &quot;&lt;/h1&gt;&quot;;</span>
+<span class="x">        }</span>
+<span class="x">        else {</span>
+<span class="x">            echo &quot;&lt;h1&gt;Not Authorized&lt;/h1&gt;&quot;;</span>
+<span class="x">        }</span>
+<span class="x">    }</span>
+<span class="x">...</span></code></pre></div>
+
+<p>And than the validate function</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">function validate($user, $pass) {</span>
+<span class="x">    require_once &#39;db.php&#39;;</span>
+<span class="x">    $link = mysql_connect($DB_HOST, $SQL_USER, $SQL_PASSWORD) or die(&#39;Could not connect: &#39; . mysql_error());</span>
+<span class="x">    mysql_select_db(&#39;users&#39;) or die(&quot;Mysql error&quot;);</span>
+<span class="x">    $user = mysql_real_escape_string($user);</span>
+<span class="x">    $query = &quot;SELECT hash FROM users WHERE username=&#39;$user&#39;;&quot;;</span>
+<span class="x">    $result = mysql_query($query) or die(&#39;Query failed: &#39; . mysql_error());</span>
+<span class="x">    $line = mysql_fetch_row($result, MYSQL_ASSOC);</span>
+<span class="x">    $hash = $line[&#39;hash&#39;];</span>
+
+<span class="x">    if (strlen($pass) != strlen($hash))</span>
+<span class="x">        return False;</span>
+
+<span class="x">    $index = 0;</span>
+<span class="x">    while($hash[$index]){</span>
+<span class="x">        if ($pass[$index] != $hash[$index])</span>
+<span class="x">            return false;</span>
+<span class="x">        # Protect against brute force attacks</span>
+<span class="x">        usleep(300000);</span>
+<span class="x">        $index+=1;</span>
+<span class="x">    }</span>
+<span class="x">    return true;</span>
+<span class="x">}</span></code></pre></div>
+
+<p>So basically we need to send $username that did not exist and null $password, 
+but becouse of this line</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">if (isset($_POST[&#39;password&#39;]) &amp;&amp; isset($_POST[&#39;username&#39;]))</span></code></pre></div>
+
+<p>we can&#39;t send empty string, array is ok :)</p>
+
+<blockquote>
+<p><a href="https://github.com/madhendl/ctf-writeups/tree/master/2015/CSAWCTF/web/lawncaresimulator" title="madhendl">more</a></p>
+</blockquote>
 
 </div>
 
