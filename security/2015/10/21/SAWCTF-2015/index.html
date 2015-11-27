@@ -71,29 +71,30 @@
   </header>
 
   <article class="post-content">
-  <h1 id="csawctf-2015-lawn-care-simulator">CSAWCTF 2015: Lawn Care Simulator</h1>
+  <h1>CSAWCTF 2015: Lawn Care Simulator</h1>
 
-<h3 id="challenge-details">Challenge details</h3>
-<p>Contest   : CSAWCTF 2015<br />
-  Challenge : Lawn Care Simulator<br />
-  Category  : Web<br />
-  Points    : 200<br /></p>
+<h3>Challenge details</h3>
 
-<p><strong>Description:</strong>
-&gt;<em>http://54.175.3.248:8089/</em></p>
+<p>Contest   : CSAWCTF 2015<br/>
+  Challenge : Lawn Care Simulator<br/>
+  Category  : Web<br/>
+  Points    : 200<br/></p>
 
-<h3 id="write-up">Write-up</h3>
+<p><strong>Description:</strong></p>
+
+<blockquote>
+<p><em>http://54.175.3.248:8089/</em></p>
+</blockquote>
+
+<h3>Write-up</h3>
+
 <p>We have the login page, which takes 2 argument username and password, and password is hashed on front with js md5;</p>
 
 <ul>
-  <li>
-    <p>First we attempt to do some SQL injection, but without success
-<img src="a1.png" alt="alt tag" /></p>
-  </li>
-  <li>
-    <p>let’s try to make some sort of error, we send a password param as array
-<img src="a2.png" alt="alt tag" /></p>
-  </li>
+<li><p>First we attempt to do some SQL injection, but without success
+<a href="/images/a1.png">image1</a></p></li>
+<li><p>let&#39;s try to make some sort of error, we send a password param as array
+<a href="/images/a2.png">image1</a></p></li>
 </ul>
 
 <p>Eureka! Works like a charm.</p>
@@ -109,10 +110,10 @@
 <span class="nt">&lt;h1&gt;</span>flag{gr0wth__h4ck!nG!1!1!<span class="nt">&lt;/h1&gt;&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span></code></pre></div>
 
-<h2 id="why-it-works">Why it works</h2>
+<h2>Why it works</h2>
 
 <ul>
-  <li>First let’s look premium.php page</li>
+<li>First let&#39;s look premium.php page</li>
 </ul>
 
 <div class="highlight"><pre><code class="language-php" data-lang="php">...
@@ -158,7 +159,7 @@ but becouse of this line</p>
 
 <div class="highlight"><pre><code class="language-php" data-lang="php">if (isset($_POST['password']) <span class="err">&amp;&amp;</span> isset($_POST['username']))</code></pre></div>
 
-<p>we can’t send empty string, array is ok :)</p>
+<p>we can&#39;t send empty string, array is ok :)</p>
 
 <p>gg wp hf</p>
 

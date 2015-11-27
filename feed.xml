@@ -5,35 +5,36 @@
     <description>computer science, security, music</description>
     <link>http://lazicnemanja.github.io/</link>
     <atom:link href="http://lazicnemanja.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 27 Nov 2015 22:14:51 +0100</pubDate>
-    <lastBuildDate>Fri, 27 Nov 2015 22:14:51 +0100</lastBuildDate>
+    <pubDate>Fri, 27 Nov 2015 22:38:56 +0100</pubDate>
+    <lastBuildDate>Fri, 27 Nov 2015 22:38:56 +0100</lastBuildDate>
     <generator>Jekyll v2.2.0</generator>
     
       <item>
         <title>SAWCTF 2015</title>
-        <description>&lt;h1 id=&quot;csawctf-2015-lawn-care-simulator&quot;&gt;CSAWCTF 2015: Lawn Care Simulator&lt;/h1&gt;
+        <description>&lt;h1&gt;CSAWCTF 2015: Lawn Care Simulator&lt;/h1&gt;
 
-&lt;h3 id=&quot;challenge-details&quot;&gt;Challenge details&lt;/h3&gt;
-&lt;p&gt;Contest   : CSAWCTF 2015&lt;br /&gt;
-  Challenge : Lawn Care Simulator&lt;br /&gt;
-  Category  : Web&lt;br /&gt;
-  Points    : 200&lt;br /&gt;&lt;/p&gt;
+&lt;h3&gt;Challenge details&lt;/h3&gt;
 
-&lt;p&gt;&lt;strong&gt;Description:&lt;/strong&gt;
-&amp;gt;&lt;em&gt;http://54.175.3.248:8089/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Contest   : CSAWCTF 2015&lt;br/&gt;
+  Challenge : Lawn Care Simulator&lt;br/&gt;
+  Category  : Web&lt;br/&gt;
+  Points    : 200&lt;br/&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;write-up&quot;&gt;Write-up&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Description:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;http://54.175.3.248:8089/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3&gt;Write-up&lt;/h3&gt;
+
 &lt;p&gt;We have the login page, which takes 2 argument username and password, and password is hashed on front with js md5;&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;First we attempt to do some SQL injection, but without success
-&lt;img src=&quot;a1.png&quot; alt=&quot;alt tag&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;let’s try to make some sort of error, we send a password param as array
-&lt;img src=&quot;a2.png&quot; alt=&quot;alt tag&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;First we attempt to do some SQL injection, but without success
+&lt;a href=&quot;/images/a1.png&quot;&gt;image1&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;let&amp;#39;s try to make some sort of error, we send a password param as array
+&lt;a href=&quot;/images/a2.png&quot;&gt;image1&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Eureka! Works like a charm.&lt;/p&gt;
@@ -49,10 +50,10 @@
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;flag{gr0wth__h4ck!nG!1!1!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;why-it-works&quot;&gt;Why it works&lt;/h2&gt;
+&lt;h2&gt;Why it works&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;First let’s look premium.php page&lt;/li&gt;
+&lt;li&gt;First let&amp;#39;s look premium.php page&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;...
@@ -98,7 +99,7 @@ but becouse of this line&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;if (isset($_POST[&#39;password&#39;]) &lt;span class=&quot;err&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isset($_POST[&#39;username&#39;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;we can’t send empty string, array is ok :)&lt;/p&gt;
+&lt;p&gt;we can&amp;#39;t send empty string, array is ok :)&lt;/p&gt;
 
 &lt;p&gt;gg wp hf&lt;/p&gt;
 </description>
