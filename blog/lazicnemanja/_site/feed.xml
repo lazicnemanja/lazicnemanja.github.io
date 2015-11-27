@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nemanja lazic</title>
+    <description>computer science, security, music</description>
+    <link>http://lazicnemanja.github.io/</link>
+    <atom:link href="http://lazicnemanja.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 27 Nov 2015 22:38:56 +0100</pubDate>
+    <lastBuildDate>Fri, 27 Nov 2015 22:38:56 +0100</lastBuildDate>
+    <generator>Jekyll v2.2.0</generator>
+    
+      <item>
+        <title>SAWCTF 2015</title>
+        <description>&lt;h1&gt;CSAWCTF 2015: Lawn Care Simulator&lt;/h1&gt;
+
+&lt;h3&gt;Challenge details&lt;/h3&gt;
+
+&lt;p&gt;Contest   : CSAWCTF 2015&lt;br/&gt;
+  Challenge : Lawn Care Simulator&lt;br/&gt;
+  Category  : Web&lt;br/&gt;
+  Points    : 200&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Description:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;http://54.175.3.248:8089/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3&gt;Write-up&lt;/h3&gt;
+
+&lt;p&gt;We have the login page, which takes 2 argument username and password, and password is hashed on front with js md5;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;First we attempt to do some SQL injection, but without success
+&lt;a href=&quot;/images/a1.png&quot;&gt;image1&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;let&amp;#39;s try to make some sort of error, we send a password param as array
+&lt;a href=&quot;/images/a2.png&quot;&gt;image1&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Eureka! Works like a charm.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Lawn Care Simulator 2015&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;//code.jquery.com/jquery-1.11.3.min.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt; 
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;flag{gr0wth__h4ck!nG!1!1!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Why it works&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;First let&amp;#39;s look premium.php page&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;...
+    if (isset($_POST[&#39;password&#39;]) &lt;span class=&quot;err&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isset($_POST[&#39;username&#39;])) {
+        $auth = validate($_POST[&#39;username&#39;], $_POST[&#39;password&#39;]); 
+        if ($auth){
+            echo &quot;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;&quot; . $flag . &quot;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&quot;;
+        }
+        else {
+            echo &quot;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Not Authorized&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&quot;;
+        }
+    }
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And than the validate function&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;function validate($user, $pass) {
+    require_once &#39;db.php&#39;;
+    $link = mysql_connect($DB_HOST, $SQL_USER, $SQL_PASSWORD) or die(&#39;Could not connect: &#39; . mysql_error());
+    mysql_select_db(&#39;users&#39;) or die(&quot;Mysql error&quot;);
+    $user = mysql_real_escape_string($user);
+    $query = &quot;SELECT hash FROM users WHERE username=&#39;$user&#39;;&quot;;
+    $result = mysql_query($query) or die(&#39;Query failed: &#39; . mysql_error());
+    $line = mysql_fetch_row($result, MYSQL_ASSOC);
+    $hash = $line[&#39;hash&#39;];
+
+    if (strlen($pass) != strlen($hash))
+        return False;
+
+    $index = 0;
+    while($hash[$index]){
+        if ($pass[$index] != $hash[$index])
+            return false;
+        # Protect against brute force attacks
+        usleep(300000);
+        $index+=1;
+    }
+    return true;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So basically we need to send $username that did not exist and null $password, 
+but becouse of this line&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;if (isset($_POST[&#39;password&#39;]) &lt;span class=&quot;err&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isset($_POST[&#39;username&#39;]))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we can&amp;#39;t send empty string, array is ok :)&lt;/p&gt;
+
+&lt;p&gt;gg wp hf&lt;/p&gt;
+</description>
+        <pubDate>Wed, 21 Oct 2015 20:47:40 +0200</pubDate>
+        <link>http://lazicnemanja.github.io/security/2015/10/21/SAWCTF-2015/</link>
+        <guid isPermaLink="true">http://lazicnemanja.github.io/security/2015/10/21/SAWCTF-2015/</guid>
+        
+        
+        <category>security</category>
+        
+      </item>
+    
+  </channel>
+</rss>

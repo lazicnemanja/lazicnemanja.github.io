@@ -1,0 +1,13 @@
+# Site settings
+title: nemanja lazic
+email: nemanja.lazic87@gmail.com
+description: "computer science, security, music"
+baseurl: ""
+url: "http://lazicnemanja.github.io"
+github_username:  lazicnemanja
+
+# Build settings
+markdown: redcarpet
+permalink: pretty
+highlighter: rouge
+#kramdown

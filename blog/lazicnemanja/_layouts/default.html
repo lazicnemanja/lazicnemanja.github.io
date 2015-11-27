@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+    <body>
+    <div class="container">
+    {% include header.html %}
+    <div class="row">
+      <div class="col-xs-6 col-md-4">
+
+        <ul class="list-unstyled left-menu">
+        {% for post in site.posts %}
+          <li><small>{{ post.date | date: "%m/%-d/%y" }}</small> <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+        {% endfor %}
+        </ul>
+
+      </div>
+      <div class="col-xs-12 col-md-8">
+          {{ content }}
+      </div> 
+    </div>
+
+    {% include footer.html %}
+    </div>
+    <script type="text/javascript" src="{{ "/plugins/bootstrap/js/bootstrap.min.js" | prepend: site.baseurl }}"></script>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+---
+layout: index
+---
+
+{% for post in site.posts %}
+  <div class="well">
+    <kbd>_title :</kbd> <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a><br/>
+    <kbd>__date :</kbd> {{ post.date | date: "%m/%-d/%y" }}<br/>
+    <kbd>__tags :</kbd> {{ post.categories }}<br/>
+    <kbd>__link :</kbd> <a href="{{ post.url | prepend: site.baseurl }}" class="readmore">readmore...</a>
+  </div>
+{% endfor %}
