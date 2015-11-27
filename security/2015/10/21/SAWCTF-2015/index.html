@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html lang="en">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>SAWCTF 2015</title>
+    <meta name="description" content="computer science, security, music">
+    
+    <link rel="icon" href="/favicon.ico">
+
+
+    <link rel="canonical" href="http://lazicnemanja.github.io/security/2015/10/21/SAWCTF-2015/">
+	<link rel="stylesheet" type="text/css" href="/plugins/bootstrap/css/bootstrap.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,300' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+    <body>
+    <div class="container">
+    <header>
+  <div class="row">
+    <div class="page-header">
+      <h1>nemanja lazic</h1>
+      computer science, security, music      
+    </div>
+  </div>
+  <div class="row">
+	<ol class="breadcrumb">
+		<li><a href="/">Home</a></li>
+		
+			
+			<li>
+				<a href="/about/">About</a>
+			</li>
+			
+		
+			
+		
+			
+			<li>
+				<a href="/"></a>
+			</li>
+			
+		
+	</ol>
+  </div>
+
+
+</header>
+    <div class="row">
+      <div class="col-xs-6 col-md-4">
+
+        <ul class="list-unstyled left-menu">
+        
+          <li><small>10/21/15</small> <a href="/security/2015/10/21/SAWCTF-2015/">SAWCTF 2015</a></li>
+        
+        </ul>
+
+      </div>
+      <div class="col-xs-12 col-md-8">
+          <div class="row">
+  <header class="post-header">
+    <h1>SAWCTF 2015</h1>
+    <p class="meta">Oct 21, 2015</p>
+  </header>
+
+  <article class="post-content">
+  <h1 id="csawctf-2015-lawn-care-simulator">CSAWCTF 2015: Lawn Care Simulator</h1>
+
+<h3 id="challenge-details">Challenge details</h3>
+<p>Contest   : CSAWCTF 2015<br />
+  Challenge : Lawn Care Simulator<br />
+  Category  : Web<br />
+  Points    : 200<br /></p>
+
+<p><strong>Description:</strong>
+&gt;<em>http://54.175.3.248:8089/</em></p>
+
+<h3 id="write-up">Write-up</h3>
+<p>We have the login page, which takes 2 argument username and password, and password is hashed on front with js md5;</p>
+
+<ul>
+  <li>
+    <p>First we attempt to do some SQL injection, but without success
+<img src="a1.png" alt="alt tag" /></p>
+  </li>
+  <li>
+    <p>let’s try to make some sort of error, we send a password param as array
+<img src="a2.png" alt="alt tag" /></p>
+  </li>
+</ul>
+
+<p>Eureka! Works like a charm.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Lawn Care Simulator 2015<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//code.jquery.com/jquery-1.11.3.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span> 
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>flag{gr0wth__h4ck!nG!1!1!<span class="nt">&lt;/h1&gt;&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<h2 id="why-it-works">Why it works</h2>
+
+<ul>
+  <li>First let’s look premium.php page</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php">...
+    if (isset($_POST['password']) <span class="err">&amp;&amp;</span> isset($_POST['username'])) {
+        $auth = validate($_POST['username'], $_POST['password']); 
+        if ($auth){
+            echo "<span class="nt">&lt;h1&gt;</span>" . $flag . "<span class="nt">&lt;/h1&gt;</span>";
+        }
+        else {
+            echo "<span class="nt">&lt;h1&gt;</span>Not Authorized<span class="nt">&lt;/h1&gt;</span>";
+        }
+    }
+...</code></pre></div>
+
+<p>And than the validate function</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php">function validate($user, $pass) {
+    require_once 'db.php';
+    $link = mysql_connect($DB_HOST, $SQL_USER, $SQL_PASSWORD) or die('Could not connect: ' . mysql_error());
+    mysql_select_db('users') or die("Mysql error");
+    $user = mysql_real_escape_string($user);
+    $query = "SELECT hash FROM users WHERE username='$user';";
+    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+    $line = mysql_fetch_row($result, MYSQL_ASSOC);
+    $hash = $line['hash'];
+
+    if (strlen($pass) != strlen($hash))
+        return False;
+
+    $index = 0;
+    while($hash[$index]){
+        if ($pass[$index] != $hash[$index])
+            return false;
+        # Protect against brute force attacks
+        usleep(300000);
+        $index+=1;
+    }
+    return true;
+}</code></pre></div>
+
+<p>So basically we need to send $username that did not exist and null $password, 
+but becouse of this line</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php">if (isset($_POST['password']) <span class="err">&amp;&amp;</span> isset($_POST['username']))</code></pre></div>
+
+<p>we can’t send empty string, array is ok :)</p>
+
+<p>gg wp hf</p>
+
+  </article>
+</div>
+      </div> 
+    </div>
+
+    <footer class="row">
+  <div class="wrap">
+    <div class="footer-col-2 column">
+      <ul>
+        <li>
+          <a href="https://github.com/lazicnemanja">
+            github
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script type="text/javascript" src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>
