@@ -16,6 +16,7 @@
     <link rel="canonical" href="http://lazicnemanja.github.io/security/2015/10/21/SAWCTF-2015/">
 	<link rel="stylesheet" type="text/css" href="/plugins/bootstrap/css/bootstrap.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -116,48 +117,52 @@
 <li>First let&#39;s look premium.php page</li>
 </ul>
 
-<div class="highlight"><pre><code class="language-php" data-lang="php">...
-    if (isset($_POST['password']) <span class="err">&amp;&amp;</span> isset($_POST['username'])) {
-        $auth = validate($_POST['username'], $_POST['password']); 
-        if ($auth){
-            echo "<span class="nt">&lt;h1&gt;</span>" . $flag . "<span class="nt">&lt;/h1&gt;</span>";
-        }
-        else {
-            echo "<span class="nt">&lt;h1&gt;</span>Not Authorized<span class="nt">&lt;/h1&gt;</span>";
-        }
-    }
-...</code></pre></div>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="nv">$auth</span> <span class="o">=</span> <span class="nx">validate</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">],</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]);</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$auth</span><span class="p">){</span>
+            <span class="k">echo</span> <span class="s2">"&lt;h1&gt;"</span> <span class="o">.</span> <span class="nv">$flag</span> <span class="o">.</span> <span class="s2">"&lt;/h1&gt;"</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s2">"&lt;h1&gt;Not Authorized&lt;/h1&gt;"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span></code></pre></div>
 
 <p>And than the validate function</p>
 
-<div class="highlight"><pre><code class="language-php" data-lang="php">function validate($user, $pass) {
-    require_once 'db.php';
-    $link = mysql_connect($DB_HOST, $SQL_USER, $SQL_PASSWORD) or die('Could not connect: ' . mysql_error());
-    mysql_select_db('users') or die("Mysql error");
-    $user = mysql_real_escape_string($user);
-    $query = "SELECT hash FROM users WHERE username='$user';";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-    $line = mysql_fetch_row($result, MYSQL_ASSOC);
-    $hash = $line['hash'];
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> 
+<span class="k">function</span> <span class="nf">validate</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$pass</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">require_once</span> <span class="s1">'db.php'</span><span class="p">;</span>
+    <span class="nv">$link</span> <span class="o">=</span> <span class="nb">mysql_connect</span><span class="p">(</span><span class="nv">$DB_HOST</span><span class="p">,</span> <span class="nv">$SQL_USER</span><span class="p">,</span> <span class="nv">$SQL_PASSWORD</span><span class="p">)</span> <span class="k">or</span> <span class="k">die</span><span class="p">(</span><span class="s1">'Could not connect: '</span> <span class="o">.</span> <span class="nb">mysql_error</span><span class="p">());</span>
+    <span class="nb">mysql_select_db</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span> <span class="k">or</span> <span class="k">die</span><span class="p">(</span><span class="s2">"Mysql error"</span><span class="p">);</span>
+    <span class="nv">$user</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+    <span class="nv">$query</span> <span class="o">=</span> <span class="s2">"SELECT hash FROM users WHERE username='</span><span class="nv">$user</span><span class="s2">';"</span><span class="p">;</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="nv">$query</span><span class="p">)</span> <span class="k">or</span> <span class="k">die</span><span class="p">(</span><span class="s1">'Query failed: '</span> <span class="o">.</span> <span class="nb">mysql_error</span><span class="p">());</span>
+    <span class="nv">$line</span> <span class="o">=</span> <span class="nb">mysql_fetch_row</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span> <span class="nx">MYSQL_ASSOC</span><span class="p">);</span>
+    <span class="nv">$hash</span> <span class="o">=</span> <span class="nv">$line</span><span class="p">[</span><span class="s1">'hash'</span><span class="p">];</span>
 
-    if (strlen($pass) != strlen($hash))
-        return False;
+    <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$pass</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$hash</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nx">False</span><span class="p">;</span>
 
-    $index = 0;
-    while($hash[$index]){
-        if ($pass[$index] != $hash[$index])
-            return false;
-        # Protect against brute force attacks
-        usleep(300000);
-        $index+=1;
-    }
-    return true;
-}</code></pre></div>
+    <span class="nv">$index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="nv">$hash</span><span class="p">[</span><span class="nv">$index</span><span class="p">]){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$pass</span><span class="p">[</span><span class="nv">$index</span><span class="p">]</span> <span class="o">!=</span> <span class="nv">$hash</span><span class="p">[</span><span class="nv">$index</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="c1"># Protect against brute force attacks
+</span>        <span class="nb">usleep</span><span class="p">(</span><span class="mi">300000</span><span class="p">);</span>
+        <span class="nv">$index</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span></code></pre></div>
 
 <p>So basically we need to send $username that did not exist and null $password, 
 but becouse of this line</p>
 
-<div class="highlight"><pre><code class="language-php" data-lang="php">if (isset($_POST['password']) <span class="err">&amp;&amp;</span> isset($_POST['username']))</code></pre></div>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> 
+ <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]))</span>
+<span class="cp">?&gt;</span></code></pre></div>
 
 <p>we can&#39;t send empty string, array is ok :)</p>
 
