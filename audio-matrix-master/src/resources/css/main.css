@@ -1,0 +1,59 @@
+body {
+	background: #000;
+    -webkit-user-select: none;
+}
+
+.matrix-grid {
+	display:table;border-collapse:separate;
+}
+
+.row {
+	display:table-row;
+}
+
+.note {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;	
+    height: 2.5rem;
+    width: 2.5rem;
+    background: #131212;
+    border-top: 3px solid #131212;
+}
+
+.note.current-step {
+    border-top: 3px solid #DE2222;
+}
+
+.led {
+    margin: auto;
+    height: 2.0rem;
+    width: 2.0rem;
+    border: 1px solid black;
+    box-shadow: inset 0px 0px 5px 1px rgb(62, 62, 62);
+    background: #2A2A2A;
+    -webkit-transition: 0.15s;
+}
+.led.active {
+    background: #A5E700;
+}
+.led.hit {
+    pointer-events:none;
+    z-index: 5;
+    -webkit-animation: hit 0.1s ease-in-out;
+}
+
+@-webkit-keyframes hit {
+    from {
+        background: rgba(255,255,255,0.5);
+        opacity: 1;
+        border-radius: 50%;
+        -webkit-transform: scale3d(1,1,1);
+    }
+    to {
+        background: rgba(255,255,255,0.5);
+        opacity: 0.0;
+        border-radius: 50%;
+        -webkit-transform: scale3d(5,5,1);
+    }
+}
