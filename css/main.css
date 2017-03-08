@@ -42,6 +42,10 @@ code span{
 }
 .cv {
 	margin-bottom: 10px;
+	border-bottom: 1px solid lightgray;
+}
+.cv:last-child {
+	border-bottom: none;
 }
 
 .highlight .hll { background-color: #49483e }
