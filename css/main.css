@@ -37,6 +37,13 @@ code span{
 	font-family: 'Ubuntu Mono', 'Source Code Pro', ‘Lucida Console’, Monaco, monospace;
 }
 
+.cv p {
+	margin: 0 0 2px;
+}
+.cv {
+	margin-bottom: 10px;
+}
+
 .highlight .hll { background-color: #49483e }
 .highlight  { background: #272822; color: #f8f8f2 }
 .highlight .c { color: #75715e } /* Comment */
