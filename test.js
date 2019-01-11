@@ -59,7 +59,7 @@
  * @constructor
  * @extends google.maps.OverlayView
  */
-function MarkerClusterer(map, opt_markers, opt_opteions) {
+function MarkerClusterer(map, opt_markers, opt_options) {
 	// MarkerClusterer implements google.maps.OverlayView interface. We use the
 	// extend function to extend MarkerClusterer with google.maps.OverlayView
 	// because it might not always be available when the code is defined so we
