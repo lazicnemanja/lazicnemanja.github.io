@@ -39,37 +39,16 @@ ul > li {
     transition: 1s;
 }
 
-ul > li:hover {
-    background-color: #70C1B3;
-    transition: 1s;
-}
-
 ul > li > span {
     color: #FF1654;
     background-color: transparent;
     font-size: 5em;
-    transition: 1s;
     overflow:visible;
-    display: grid;
+
+    transition: 0.5s;
 }
 
-.click-right > span {
-    font-size: 40em;
-    background-color: transparent;
-    transform: rotate3d(10, 15, 1, 45deg);
-    transition: 1s;
-}
-
-.click-left > span {
-    font-size: 40em;
-    background-color: transparent;
-    transform: rotate3d(-15, -20, 40, -45deg);
-    transition: 1s;
-}
-
-.cl > span {
-    font-size: 100em;
-}
-.cl {
-    overflow:visible;
+ul > li:hover > span {
+    font-size: 10em;
+    transition: 0.5s;
 }
