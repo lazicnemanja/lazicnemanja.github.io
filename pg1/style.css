@@ -1,0 +1,75 @@
+/*
+https://coolors.co/247ba0-70c1b3-b2dbbf-f3ffbd-ff1654
+
+#247BA0
+#70C1B3
+#B2DBBF
+#F3FFBD
+#FF1654
+*/
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    overflow: hidden;
+}
+
+body > * {
+    margin: 0;
+    padding: 0;  
+}
+
+ul {
+    list-style-type: none;
+    display: grid;
+    gap: 0.1rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 33vh);
+    align-items: stretch;
+}
+
+ul > li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #B2DBBF;
+    overflow: hidden;
+    transition: 1s;
+}
+
+ul > li:hover {
+    background-color: #70C1B3;
+    transition: 1s;
+}
+
+ul > li > span {
+    color: #FF1654;
+    background-color: transparent;
+    font-size: 5em;
+    transition: 1s;
+    overflow:visible;
+    display: grid;
+}
+
+.click-right > span {
+    font-size: 40em;
+    background-color: transparent;
+    transform: rotate3d(10, 15, 1, 45deg);
+    transition: 1s;
+}
+
+.click-left > span {
+    font-size: 40em;
+    background-color: transparent;
+    transform: rotate3d(-15, -20, 40, -45deg);
+    transition: 1s;
+}
+
+.cl > span {
+    font-size: 100em;
+}
+.cl {
+    overflow:visible;
+}
