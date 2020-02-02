@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Volca bass sequencer</title>
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+        <style>
+            .alert {
+                display: none;
+            }
+            .mainSettings {
+                padding: 10px;
+                margin: 20px 0; 
+            }
+            .step {
+                border: 1px dotted #909090;
+                padding: 10px;
+                margin: 15px 0;
+            }
+            .velocity {
+                width: 50px;
+            }
+            .play {
+                border: 1px solid #000;
+                background-color: #dff9b2
+            }
+
+            .button {
+                border-radius: 10%;   
+            }
+            .export-import {
+                margin-top: 30px;
+                padding-top: 30px;
+                border-top: 1px solid gray;
+            }
+
+
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Volca bass sequencer</h1>
+            <div id="error" class="alert alert-danger" role="alert">
+                Could not find any MIDI device.
+            </div>
+
+
+            <div class="row">
+                <div class="mainSettings">
+                    <label>BPM:</label>
+                    <input id="mainBPM" type="number" min="40" max="300" value="120">
+                    <label>root note:</label>
+                    <select id="rootnote"></select>
+                    <label>scale:</label>
+                    <select id="mainscale"></select>
+                    <label>MIDI out:</label>
+                    <select id="midiout"></select>
+
+                    <a href="javascript:void(0)" onclick="start()" class="button btn btn-success start">START</a>
+                    <a href="javascript:void(0)" onclick="stop()" class="button btn btn-danger stop">STOP</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+            </div>
+            <div class="row">
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+                <div class="col"> <div class="step"></div> </div>
+            </div>
+
+
+            <div class="export-import"> 
+                <div class="row">
+                    <div class="col">
+                        <a href="javascript:void(0)" onclick="exportPattern()" class="button btn btn-success">Export Pattern</a>
+                    </div>
+    
+                    <div class="col">
+                        <input type="file" id="input" onchange="importPattern(this.files)">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="jquery.js"></script>
+        <script src="seq.min.js"></script>
+    </body>
+</html>
